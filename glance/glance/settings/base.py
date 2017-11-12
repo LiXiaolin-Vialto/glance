@@ -82,11 +82,10 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '1qaz@WSX',
         'HOST': 'localhost',
-        'PORT': '3307',
+        'PORT': '3306',
         # Set this to True to wrap each HTTP request in a transaction on this
         # database.
         'ATOMIC_REQUESTS': True,
-        'OPTIONS': {'charset': 'utf8mb4'},
     },
     'external': {
         'ENGINE': 'django.db.backends.mysql',
@@ -96,7 +95,6 @@ DATABASES = {
         'HOST': '',
         'PORT': '3306',
         'ATOMIC_REQUESTS': True,
-        'OPTIONS': {'charset': 'utf8mb4'},
     },
 }
 
