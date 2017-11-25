@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Glance{% endblock %}
+
+
+{% block body_block %}
+        <h1>Register with Glance</h1>
+
+        {% if registered %}
+        <strong>感谢您的注册</strong>
+        <a href="/">点击返回首页.</a><br />
+        {% else %}
+        <strong>请在这里注册!</strong><br />
+
+        <form id="user_form" method="post" action="/register/"
+                enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <!-- Display each form. The as_p method wraps each element in a paragraph
+                 (<p>) element. This ensures each element appears on a new line,
+                 making everything look neater. -->
+            {{ user_form.as_p }}
+            {{ serial_form.as_p }}
+
+            <input type="submit" name="submit" value="Register" />
+        </form>
+        {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/lodash.min.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+{% endblock %}
