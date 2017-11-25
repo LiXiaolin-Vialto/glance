@@ -142,9 +142,13 @@ def sub_level_serials(request):
             return Response(results)
         else:
             # 其他serial
-            serials = Serial.objects.filter(
-                serial__startswith=serializer.validated_data['serial']
-            ).exclude(serial=serial.serial)
+            # serials = Serial.objects.filter(
+            #     serial__startswith=serializer.validated_data['serial']
+            # ).exclude(serial=serial.serial)
+
+            # not sure why, filter does not work!
+            sql = "serial LIKE '{}%%'".format(serial.serial)
+            serials = Serial.objects.extra(where=[sql]).exclude(serial=serial.serial)
             results = _format_serials(serials)
             return Response(results)
     raise APIError(APIError.INVALID_REQUEST_DATA, detail=serializer.errors)
@@ -220,7 +224,6 @@ def _format_serials_without_level(serials):
 
 
 @api_view(['GET'])
-# @login_required
 def sub_serials(request):
     """根据当前serial获取该seial的下级serial"""
     logger.info('[sub_serials] Received data : %s' %
@@ -236,9 +239,13 @@ def sub_serials(request):
             return Response(results)
         else:
             # 其他serial
-            serials = Serial.objects.filter(
-                serial__startswith=str(serial.serial)
-            ).exclude(serial=serial.serial)
+            # serials = Serial.objects.filter(
+            #     serial__startswith=str(serial.serial)
+            # ).exclude(serial=serial.serial)
+
+            # not sure why, filter does not work!
+            sql = "serial LIKE '{}%%'".format(serial.serial)
+            serials = Serial.objects.extra(where=[sql]).exclude(serial=serial.serial)
             results = _format_serials_without_level(serials)
             return Response(results)
     raise APIError(APIError.INVALID_REQUEST_DATA, detail=serializer.errors)
