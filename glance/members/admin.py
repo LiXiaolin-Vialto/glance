@@ -6,17 +6,25 @@ from django.contrib import admin
 from .models import Serial, Member
 
 
-# class MemberInline(admin.StackedInline):
-#     model = Member
-
-
 @admin.register(Serial)
 class SerialAdmin(admin.ModelAdmin):
     list_display = ('serial', 'level', 'name', 'moblie')
     readonly_fields = ('level', 'number_of_members')
-    # inlines = [
-    #     MemberInline,
-    # ]
 
     def number_of_members(self, obj):
         return len(Member.objects.filter(serial=obj.serial))
+    number_of_members.short_description = '优宜巧购用户数'
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(Member)
+class MemberAdmin(admin.ModelAdmin):
+    list_display = ('name', 'moblie', 'email', 'serial',
+                    'serial_changed', 'uid', 'reg_time')
+    readonly_fields = ('name', 'moblie', 'email',
+                       'serial_changed', 'uid', 'reg_time')
+
+    def has_delete_permission(self, request, obj=None):
+        return False
