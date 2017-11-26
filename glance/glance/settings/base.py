@@ -189,3 +189,8 @@ LOGGING = {
 
     }
 }
+
+CRONJOBS = [
+    ('15 2 * * *', 'members.crons.auto_create_new_members'),
+    ('45 2 * * *', 'members.crons.auto_create_new_orders'),
+]
