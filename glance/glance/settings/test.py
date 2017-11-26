@@ -11,7 +11,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-SERVER_ALIAS = 'local'
+SERVER_ALIAS = 'test'
 
 # glance ini file path
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,12 +21,18 @@ config = ConfigParser()
 
 config.read(os.path.join(INI_DIR, 'glance.ini'))
 
-# local SECRET_KEY
-SECRET_KEY = config.get('local', 'SECRET_KEY')
-external_db_user = config.get('local', 'external_db_user')
-external_db_password = config.get('local', 'external_db_password')
-external_db_host = config.get('local', 'external_db_host')
-external_db_port = config.get('local', 'external_db_port')
+# test SECRET_KEY
+SECRET_KEY = config.get('test', 'SECRET_KEY')
+# for default db
+default_db_user = config.get('default', 'default_db_user')
+default_db_password = config.get('default', 'default_db_password')
+default_db_host = config.get('default', 'default_db_host')
+default_db_port = config.get('default', 'default_db_port')
+#  for external db
+external_db_user = config.get('test', 'external_db_user')
+external_db_password = config.get('test', 'external_db_password')
+external_db_host = config.get('test', 'external_db_host')
+external_db_port = config.get('test', 'external_db_port')
 
 
 DATABASES = {
@@ -34,10 +40,10 @@ DATABASES = {
         # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'glance',
-        'USER': 'root',
-        'PASSWORD': '1qaz@WSX',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'USER': default_db_user,
+        'PASSWORD': default_db_password,
+        'HOST': default_db_host,
+        'PORT': default_db_port,
         # Set this to True to wrap each HTTP request in a transaction on this
         # database.
         'ATOMIC_REQUESTS': True,
@@ -55,3 +61,4 @@ DATABASES = {
         }
     },
 }
+

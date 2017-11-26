@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -93,16 +94,7 @@ DATABASES = {
         'ATOMIC_REQUESTS': True,
     },
     'external': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ecmall',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '3306',
-        'ATOMIC_REQUESTS': True,
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        }
+        # external ecmall
     },
 }
 
