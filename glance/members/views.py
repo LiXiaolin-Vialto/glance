@@ -126,7 +126,7 @@ def _format_serials(serials):
 
 
 @api_view(['GET'])
-# @login_required
+@login_required
 def sub_level_serials(request):
     """根据当前serial获取该seial的下级serial, sort in level"""
     logger.info('[sub_level_serials] Received data : %s' %
@@ -155,7 +155,7 @@ def sub_level_serials(request):
 
 
 @api_view(['GET'])
-# @login_required
+@login_required
 def get_member_orders(request):
     """根据当前serial，获取直系用户订单"""
     logger.info('[get_member_orders] Received data : %s' %
@@ -188,7 +188,7 @@ def get_member_orders(request):
 
 # ########################drop later#########################
 @api_view(['GET'])
-# @login_required
+@login_required
 def get_all_member_orders(request):
     """根据当前serial，获取直系用户所有订单"""
     logger.info('[get_all_member_orders] Received data : %s' %
@@ -224,6 +224,7 @@ def _format_serials_without_level(serials):
 
 
 @api_view(['GET'])
+@login_required
 def sub_serials(request):
     """根据当前serial获取该seial的下级serial"""
     logger.info('[sub_serials] Received data : %s' %
