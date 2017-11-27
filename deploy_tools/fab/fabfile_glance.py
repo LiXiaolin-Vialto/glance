@@ -43,14 +43,12 @@ from contextlib import contextmanager
 DEBUG = False
 
 PROJECT_ASCII_NAME = '''\
- _______  _______  ______  _________ _
-(  ____ )(  ___  )(  ___ \ \__   __/( (    /|
-| (    )|| (   ) || (   ) )   ) (   |  \  ( |
-| (____)|| |   | || (__/ /    | |   |   \ | |
-|     __)| |   | ||  __ (     | |   | (\ \) |
-| (\ (   | |   | || (  \ \    | |   | | \   |
-| ) \ \__| (___) || )___) )___) (___| )  \  |
-|/   \__/(_______)|/ \___/ \_______/|/    )_)
+       _
+  __ _| | __ _ _ __   ___ ___
+ / _` | |/ _` | '_ \ / __/ _ \
+| (_| | | (_| | | | | (_|  __/
+ \__, |_|\__,_|_| |_|\___\___|
+ |___/
 '''
 env.port = 22
 env.git_branch = 'master'
@@ -66,11 +64,11 @@ env.project_root = '/home/hachen/projects/%s' % (env.project)
 
 env.settings = {
     'test': {
-        'hosts': ['root@10.66.8.100'],
+        'hosts': ['root@121.43.118.191'],
         'project_base': '/home/hachen/projects',
         'project_root': '/home/hachen/projects/%s' % env.project,
         'django_settings': 'test',
-        'app_url': 'http://10.66.8.100:8108',
+        'app_url': 'http://121.43.118.191:8108',
     },
     'staging': {
     },
