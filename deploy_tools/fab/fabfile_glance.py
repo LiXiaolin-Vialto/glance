@@ -56,7 +56,7 @@ env.venv_name = '.env'
 env.guni_ip = '0.0.0.0'
 env.guni_port = 8108
 env.guni_workers = 1
-env.project = 'robin'
+env.project = 'glance'
 
 env.project_base = '/data/projects/'
 env.remote_project_base = '/data/projects/%s' % env.project
