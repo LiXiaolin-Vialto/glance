@@ -58,15 +58,15 @@ env.guni_port = 8108
 env.guni_workers = 1
 env.project = 'robin'
 
-env.project_base = '/home/hachen/projects/'
-env.remote_project_base = '/home/hachen/projects/%s' % env.project
-env.project_root = '/home/hachen/projects/%s' % (env.project)
+env.project_base = '/data/projects/'
+env.remote_project_base = '/data/projects/%s' % env.project
+env.project_root = '/data/projects/%s' % (env.project)
 
 env.settings = {
     'test': {
         'hosts': ['root@121.43.118.191'],
-        'project_base': '/home/hachen/projects',
-        'project_root': '/home/hachen/projects/%s' % env.project,
+        'project_base': '/data/projects',
+        'project_root': '/data/projects/%s' % env.project,
         'django_settings': 'test',
         'app_url': 'http://121.43.118.191:8108',
     },
