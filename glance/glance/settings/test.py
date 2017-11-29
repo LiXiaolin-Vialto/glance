@@ -16,6 +16,7 @@ SERVER_ALIAS = 'test'
 # glance ini file path
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INI_DIR = os.path.dirname(os.path.dirname(os.path.dirname(BASE_DIR)))
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # instantiate
 config = ConfigParser()
 
