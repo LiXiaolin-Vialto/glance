@@ -24,10 +24,10 @@ config.read(os.path.join(INI_DIR, 'glance.ini'))
 # test SECRET_KEY
 SECRET_KEY = config.get('test', 'SECRET_KEY')
 # for default db
-default_db_user = config.get('default', 'default_db_user')
-default_db_password = config.get('default', 'default_db_password')
-default_db_host = config.get('default', 'default_db_host')
-default_db_port = config.get('default', 'default_db_port')
+default_db_user = config.get('test', 'default_db_user')
+default_db_password = config.get('test', 'default_db_password')
+default_db_host = config.get('test', 'default_db_host')
+default_db_port = config.get('test', 'default_db_port')
 #  for external db
 external_db_user = config.get('test', 'external_db_user')
 external_db_password = config.get('test', 'external_db_password')
