@@ -9,7 +9,7 @@ from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 SERVER_ALIAS = 'test'
 
@@ -48,6 +48,9 @@ DATABASES = {
         # Set this to True to wrap each HTTP request in a transaction on this
         # database.
         'ATOMIC_REQUESTS': True,
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
     },
     'external': {
         'ENGINE': 'django.db.backends.mysql',
