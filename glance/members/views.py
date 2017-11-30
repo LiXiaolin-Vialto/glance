@@ -211,6 +211,9 @@ def get_all_member_orders(request):
                                 'total': order.total,
                                 'order_time': order.order_time,
                                 'finished_time': order.finished_time})
+        import operator
+        details.sort(key=operator.itemgetter('finished_time'))
+        details.reverse()
         return Response({'results': details})  # 数据能够呈现，之后需要根据前端要求，进行修改
     raise APIError(APIError.INVALID_REQUEST_DATA, detail=serializer.errors)
 

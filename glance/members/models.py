@@ -52,8 +52,8 @@ class Member(Timestampable, models.Model):
     reg_time = models.DateTimeField(verbose_name='优宜巧购注册时间')
 
     class Meta:
-        verbose_name = _('用户')
-        verbose_name_plural = _('用户')
+        verbose_name = _('优宜巧购用户')
+        verbose_name_plural = _('优宜巧购用户')
 
     def __unicode__(self):
         return self.name
