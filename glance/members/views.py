@@ -233,7 +233,7 @@ def _format_serials_without_level(serials):
 
 
 @api_view(['GET'])
-# @login_required
+@login_required
 def sub_serials(request):
     """根据当前serial获取该seial的下级serial"""
     logger.info('[sub_serials] Received data : %s' %
