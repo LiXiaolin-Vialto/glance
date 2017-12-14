@@ -147,7 +147,13 @@ def sub_level_serials(request):
             # ).exclude(serial=serial.serial)
 
             # not sure why, filter does not work!
-            sql = "serial LIKE '{}%%'".format(serial.serial)
+            if serial.level == 0:
+                condition = serial.serial[:5]
+            elif serial.level == 1:
+                condition = serial.serial[:6]
+            else:
+                condition = serial.serial
+            sql = "serial LIKE '{}%%'".format(condition)
             serials = Serial.objects.extra(where=[sql]).exclude(serial=serial.serial)
             results = _format_serials(serials)
             return Response(results)
@@ -227,7 +233,7 @@ def _format_serials_without_level(serials):
 
 
 @api_view(['GET'])
-@login_required
+# @login_required
 def sub_serials(request):
     """根据当前serial获取该seial的下级serial"""
     logger.info('[sub_serials] Received data : %s' %
@@ -239,6 +245,7 @@ def sub_serials(request):
         # 超级serial
         if serial.is_supper:
             serials = Serial.objects.all().exclude(serial=serial.serial)
+            print serials
             results = _format_serials_without_level(serials)
             return Response(results)
         else:
@@ -248,7 +255,13 @@ def sub_serials(request):
             # ).exclude(serial=serial.serial)
 
             # not sure why, filter does not work!
-            sql = "serial LIKE '{}%%'".format(serial.serial)
+            if serial.level == 0:
+                condition = serial.serial[:5]
+            elif serial.level == 1:
+                condition = serial.serial[:6]
+            else:
+                condition = serial.serial
+            sql = "serial LIKE '{}%%'".format(condition)
             serials = Serial.objects.extra(where=[sql]).exclude(serial=serial.serial)
             results = _format_serials_without_level(serials)
             return Response(results)
