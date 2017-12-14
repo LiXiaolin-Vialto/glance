@@ -33,8 +33,13 @@ class Serial(Timestampable, models.Model):
         return self.serial
 
     def save(self, **kwargs):
-        # 根据serial长度决定会员层级,前3位为地区码,后每两位一层
-        self.level = (len(self.serial) - 3) / 2
+        s_len = len(self.serial.rstrip("0"))
+        if (s_len == 5):
+            self.level = 0
+        elif (s_len == 6):
+            self.level = 1
+        else:
+            self.level = 2
         super(Serial, self).save(kwargs)
 
 
@@ -43,8 +48,8 @@ class Member(Timestampable, models.Model):
     name = models.CharField(max_length=32, unique=True, verbose_name='用户名')
     email = models.EmailField(unique=True, verbose_name='注册邮箱')
     moblie = models.CharField(max_length=12, unique=True, verbose_name='手机号')
-    # 默认使用 01001这个序列号
-    serial = models.CharField(max_length=32, default="01001", null=True,
+    # 默认使用 01001000这个序列号
+    serial = models.CharField(max_length=32, default="01001000", null=True,
                               db_index=True, verbose_name='序列号')
     serial_changed = models.IntegerField(default=0, verbose_name='序列号改变次数')
     uid = models.CharField(max_length=32, unique=True,
