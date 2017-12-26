@@ -88,8 +88,3 @@ def auto_create_new_orders():
                                  finished_time=timestamp_converter(row[5]))
     else:
         logger.info("No new ORDERs.")
-
-
-# ==========
-auto_create_new_members()
-auto_create_new_orders()
