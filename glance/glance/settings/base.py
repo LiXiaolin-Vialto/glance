@@ -135,6 +135,7 @@ DATE_FORMAT = 'Y-m-d'
 
 DATETIME_FORMAT = 'y-m-d H:i:s'
 
+LOGIN_REDIRECT_URL = '/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -182,7 +183,12 @@ LOGGING = {
             'propagate': True
         },
         'commons': {
-            'handlers': ['file', 'console'],
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+        'django_crontab': {
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True
         },
@@ -191,6 +197,6 @@ LOGGING = {
 }
 
 CRONJOBS = [
-    ('15 2 * * *', 'members.crons.auto_create_new_members'),
-    ('45 2 * * *', 'members.crons.auto_create_new_orders'),
+    ('15 4 * * *', 'members.crons.auto_create_new_members'),
+    ('45 4 * * *', 'members.crons.auto_create_new_orders'),
 ]
