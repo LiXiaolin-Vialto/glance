@@ -87,3 +87,21 @@ class Order(Timestampable, models.Model):
 
     def __unicode__(self):
         return unicode(self.order_number)
+
+
+class MonthlyData(Timestampable, models.Model):
+    """优宜巧购用户月度消费表"""
+    # 月度数据用YYYY-MM的字符形式
+    month = models.CharField(max_length=16, verbose_name='月度')
+    buyer_id = models.CharField(max_length=32, verbose_name='买家ID')
+    buyer_name = models.CharField(max_length=32, verbose_name='买家名')
+    total = models.FloatField(verbose_name='订单总金额')
+    amount = models.IntegerField(verbose_name='优宜巧购月度订单数')
+
+    class Meta:
+        verbose_name = _('巧购用户月度订单汇总')
+        verbose_name_plural = _('巧购用户月度订单汇总')
+        unique_together = ("month", "buyer_id")
+
+    def __unicode__(self):
+        return unicode("Month: %s, Buyer: %s." % (self.month, self.buyer_id))
