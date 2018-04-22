@@ -196,7 +196,7 @@ def get_member_orders(request):
 @api_view(['GET'])
 @login_required
 def get_all_member_orders(request):
-    """根据当前serial，获取直系用户所有订单"""
+    """根据当前serial,获取直系用户所有订单,此接口不能通过日期来查看"""
     logger.info('[get_all_member_orders] Received data : %s' %
                 request.query_params)
     serializer = AllMemberOrdersSerializer(data=request.query_params)
@@ -227,8 +227,8 @@ def get_all_member_orders(request):
 def _format_serials_without_level(serials):
     """将符查找到合条件的sub serials"""
     details = []
-    for i in [s.serial for s in serials]:
-        details.append({"serial": i})
+    for s, n in [(s.serial, s.name) for s in serials]:
+        details.append({"serial": s, "name": n})
     return {'results': details}
 
 
