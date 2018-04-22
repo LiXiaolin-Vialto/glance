@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import logging
 import time
-
+import calendar
 from datetime import timedelta, date, datetime
-from django.db import connections
-from django.db import transaction
 
-from models import Member, Order
+from django.db import connections, transaction
+from django.db.models import Sum
+
+from models import Member, Order, MonthlyData
 
 
 logger = logging.getLogger(__name__)
@@ -60,13 +61,13 @@ def auto_create_new_members():
                 (YESTERDAY, TODAY))
     rows = get_data_from_external(NEW_MEMEBERS_SQL)
     if rows:
-        logger.info("Fetched %s new MEMBERs on %s." % (len(rows), TODAY))
         for row in rows:
             Member.objects.create(name=row[1],
                                   email=row[2],
                                   moblie=row[3],
                                   uid=str(row[0]),
                                   reg_time=timestamp_converter(row[4]))
+        logger.info("%s new MEMBERs on %s. Done!" % (len(rows), TODAY))
     else:
         logger.info("No new MEMBERs.")
 
@@ -78,7 +79,6 @@ def auto_create_new_orders():
                 (YESTERDAY, TODAY))
     rows = get_data_from_external(NEW_FINISHED_ORDERS_SQL)
     if rows:
-        logger.info("Fetched %s new ORDERs on %s." % (len(rows), TODAY))
         for row in rows:
             Order.objects.create(order_number=str(row[0]),
                                  buyer_id=str(row[1]),
@@ -86,5 +86,29 @@ def auto_create_new_orders():
                                  total=row[3],
                                  order_time=timestamp_converter(row[4]),
                                  finished_time=timestamp_converter(row[5]))
+        logger.info("%s new ORDERs on %s. Done!" % (len(rows), TODAY))
     else:
         logger.info("No new ORDERs.")
+
+
+@transaction.atomic
+def auto_generate_monthly_data():
+    """每月1号创建前一月度巧购用户的订单汇总"""
+    if TODAY.day == 1:
+        logger.info("Generating %s's MONTHLY_DATA on %s." %
+                    (YESTERDAY.strftime("%Y-%m"), TODAY))
+        last_month_orders = Order.objects.filter(
+            finished_time__year=YESTERDAY.year,
+            finished_time__month=YESTERDAY.month)
+
+        for d in last_month_orders.values('buyer_id').distinct():
+            orders = last_month_orders.filter(
+                buyer_id=d['buyer_id'])
+            MonthlyData.objects.create(month=YESTERDAY.strftime("%Y-%m"),
+                                       buyer_id=d['buyer_id'],
+                                       buyer_name=orders[0].buyer_name,
+                                       total=orders.aggregate(
+                                           Sum('total'))["total__sum"],
+                                       amount=len(orders))
+        logger.info(" %s's monthly_datas on %s Done!." %
+                    (YESTERDAY.strftime("%Y-%m"), TODAY))
