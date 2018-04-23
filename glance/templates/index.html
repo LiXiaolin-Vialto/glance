@@ -8,8 +8,8 @@
 {% block body_block %}
 {% if user.is_authenticated %}
 <p>
-    <span class="nowrap">欢迎您，您的会员号为: </span>
-    <span class="nowrap" id="serial">{{user.serial.serial}}</span>
+    <span class="nowrap">欢迎您<b>{{user.serial.name}}</b>, 您的会员号为: </span>
+    <span class="nowrap" id="serial"><b>{{user.serial.serial}}</b></span>
 </p>
 
 <h4>次级会员列表</h4>
