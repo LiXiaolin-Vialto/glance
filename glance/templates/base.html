@@ -43,29 +43,27 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">Glance</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated %}
-            <li class="active"><a href="/logout">退出登录</a></li>
-            {% else %}
-            <li class="active"><a href="/login">会员登录</a></li>
-            <li class="active"><a href="/register">会员注册</a></li>
-            {% endif %}
-            <!-- <li class="active"><a href="/_admin">Admin</a></li>s -->
-          </ul>
-        </div>
-      </div>
+    <nav class="navbar navbar-expand navbar-light bg-transparent fixed-top">
+      <a class="navbar-brand" href="#">Glance</a>
+      <button type="button" class="navbar-toggler"
+              data-toggle="collapse"
+              data-target="#navbar"
+              aria-expanded="false"
+              aria-controls="navbar"
+              aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+        <li class="nav-item active"><a href="/logout" class="nav-link">退出登录</a></li>
+        {% else %}
+        <li class="nav-item"><a href="/login" class="nav-link">会员登录</a></li>
+        <li class="nav-item"><a href="/register" class="nav-link">会员注册</a></li>
+        {% endif %}
+        <!-- <li class="active"><a href="/_admin">Admin</a></li>s -->
+      </ul>
+    </div>
     </nav>
 
     <div class="container theme-showcase" role="main">
