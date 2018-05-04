@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import logging
-from datetime import timedelta
+from datetime import timedelta, date
+from dateutil.relativedelta import relativedelta
 
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
+from django.db.models import Sum
 
 from rest_framework.response import Response
 # from rest_framework.pagination import PageNumberPagination
@@ -16,7 +18,7 @@ from .serializers import (SubLevelSerialSerializer,
                           MemberOrdersSerializer,
                           AllMemberOrdersSerializer,
                           )
-from .models import Serial, Member, Order
+from .models import Serial, Member, Order, MonthlyData
 from commons.exceptions import APIError
 from .forms import UserForm, SerialForm
 
@@ -192,6 +194,47 @@ def get_member_orders(request):
     raise APIError(APIError.INVALID_REQUEST_DATA, detail=serializer.errors)
 
 
+@api_view(['GET'])
+def get_monthly_data(request):
+    """
+    根据当前serial,获取直系用户月度订单,此接口不能通过日期来查看
+    目前取近6个月的数据，用AllMemberOrdersSerializer
+    TODO: 按日期查询
+    """
+    logger.info('[get_monthly_data] Received data : %s' %
+                request.query_params)
+    serializer = AllMemberOrdersSerializer(data=request.query_params)
+    if serializer.is_valid():
+        logger.info('[get_monthly_data] Received data is valid.')
+        details = []
+        # 取到该序列会员所关联的优宜巧购用户的buyer_id
+        members = Member.objects.filter(
+            serial=serializer.validated_data['serial']
+        )
+        buyer_ids = [member.uid for member in members]
+        # 序列会员的推荐巧购用户多有月度订单汇总数据
+        monthly_data = MonthlyData.objects.filter(buyer_id__in=buyer_ids)
+
+        def _gen_past_six_months(given_date=None):
+            if given_date is None:
+                return [date.today() + relativedelta(
+                    months=-i) for i in range(1, 7)]
+            else:
+                return [given_date + relativedelta(
+                    months=-i) for i in range(1, 7)]
+
+        for month in _gen_past_six_months(date(2017, 3, 1)):
+            data = monthly_data.filter(month=month.strftime("%Y-%m"))
+            details.append(
+                {"month": month.strftime("%Y-%m"),
+                 "total": data.aggregate(Sum("total"))["total__sum"],
+                 "amount": data.aggregate(Sum("amount"))["amount__sum"],
+                 "num_of_buyers": len(data)
+                 })
+        return Response({'results': details})
+    raise APIError(APIError.INVALID_REQUEST_DATA, detail=serializer.errors)
+
+
 # ########################drop later#########################
 @api_view(['GET'])
 @login_required
@@ -209,7 +252,7 @@ def get_all_member_orders(request):
         )
         for member in members:
             orders = Order.objects.filter(
-                buyer_id=member.uid,
+                buyer_id=member.uid
             ).order_by('finished_time')
             for order in orders:
                 details.append({'order_number': order.order_number,

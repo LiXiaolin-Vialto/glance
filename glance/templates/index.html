@@ -18,6 +18,35 @@
        <li v-for="obj in serialData.serials"><a data-toggle="tab" href="#${obj.serial}" @click="setSelectedSerial(obj.serial)">${obj.name}的用户订单</a></li>
     </ul>
 
+<h4>月度汇总</h4>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>月份</th>
+                    <th>买家数</th>
+                    <th>订单数</th>
+                    <th>订单总金额</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="month in monthlyData.months">
+                    <td class="left">${monthlyData.months.indexOf(month) + 1}</td>
+                    <td>${month.month}</td>
+                    <td>${month.num_of_buyers}</td>
+                    <td>${month.amount}</td>
+                    <td>${month.total}</td>
+                    <div v-if="(monthlyData.months.length == 0)">
+                    <strong>无月度汇总。</strong>
+                    </div>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div> 
+
 <h4>推荐用户的优宜巧购订单列表</h4>
 <div class="row">
     <div class="col-md-12">

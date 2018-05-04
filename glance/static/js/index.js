@@ -10,6 +10,12 @@ function get(url, data) {
     });
 }
 
+function filterMonthlyData(data){
+    var filteredAry = data.filter(function(e) { return e.num_of_buyers !== 0 })
+    // var filteredAry = data.filter(e => e.num_of_buyers !== 0)
+    return filteredAry;
+}
+
 // 获取用户serial
 var userSerial = $('#serial').text();
 
@@ -24,6 +30,9 @@ var glanceData = new Vue({
         orderData: {
             orders: []
         },
+        monthlyData: {
+            months: []
+        },
         selectedSerial: '',
     },
     methods: {
@@ -34,6 +43,12 @@ var glanceData = new Vue({
         get('/api/get-all-orders/',{ serial: self.selectedSerial}
             ).then(function(res) {
         self.orderData.orders = res.results;});
+
+        get('/api/get-monthly-data/', { serial: self.selectedSerial
+        }).then(function(res) {
+            self.monthlyData.months = filterMonthlyData(res.results);
+            console.log(self.monthlyData.months);
+        });
         }
     },
     created: function() {
@@ -52,6 +67,13 @@ var glanceData = new Vue({
         }).then(function(res) {
             self.orderData.orders = res.results;
             console.log(self.orderData.orders);
+        });
+        // 获取会员的月度汇总
+        get('/api/get-monthly-data/', {
+            serial: userSerial
+        }).then(function(res) {
+            self.monthlyData.months = filterMonthlyData(res.results);
+            console.log(self.monthlyData.months);
         });
     }
 });
