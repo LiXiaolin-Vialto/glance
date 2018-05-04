@@ -93,7 +93,10 @@ def auto_create_new_orders():
 
 @transaction.atomic
 def auto_generate_monthly_data():
-    """每月1号创建前一月度巧购用户的订单汇总"""
+    """
+    每月1号创建前一月度巧购用户的订单汇总
+    每月1号凌晨执行
+    """
     if TODAY.day == 1:
         logger.info("Generating %s's MONTHLY_DATA on %s." %
                     (YESTERDAY.strftime("%Y-%m"), TODAY))
