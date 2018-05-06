@@ -197,6 +197,9 @@ LOGGING = {
 }
 
 CRONJOBS = [
-    ('15 4 * * *', 'members.crons.auto_create_new_members'),
-    ('45 4 * * *', 'members.crons.auto_create_new_orders'),
+    # 每日执行
+    ('15 2 * * *', 'members.crons.auto_create_new_members'),
+    ('45 2 * * *', 'members.crons.auto_create_new_orders'),
+    # 每月1号执行
+    ('15 3 1 * *', 'members.crons.auto_generate_monthly_data'),
 ]
