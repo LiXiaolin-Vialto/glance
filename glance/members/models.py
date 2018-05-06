@@ -52,6 +52,7 @@ class Member(Timestampable, models.Model):
     serial = models.CharField(max_length=32, default="01001000", null=True,
                               db_index=True, verbose_name='序列号')
     serial_changed = models.IntegerField(default=0, verbose_name='序列号改变次数')
+    serial_history = models.TextField(default="=>", verbose_name='序列号改变历史')
     uid = models.CharField(max_length=32, unique=True,
                            verbose_name='优宜巧购用户ID')
     reg_time = models.DateTimeField(verbose_name='优宜巧购注册时间')
@@ -69,6 +70,7 @@ class Member(Timestampable, models.Model):
         if previous:
             if previous.serial != self.serial:
                 self.serial_changed += 1
+                self.serial_history += ("%s=>" % previous.serial)
         super(Member, self).save(kwargs)
 
 
