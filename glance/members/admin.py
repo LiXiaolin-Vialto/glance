@@ -22,9 +22,11 @@ class SerialAdmin(admin.ModelAdmin):
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
     list_display = ('name', 'moblie', 'email', 'serial',
-                    'serial_changed', 'uid', 'reg_time')
+                    'serial_changed', 'serial_history',
+                    'uid', 'reg_time')
     readonly_fields = ('name', 'moblie', 'email',
-                       'serial_changed', 'uid', 'reg_time')
+                       'serial_changed', 'serial_history',
+                       'uid', 'reg_time')
 
     def has_delete_permission(self, request, obj=None):
         return False
