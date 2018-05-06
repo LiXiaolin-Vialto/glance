@@ -42,6 +42,47 @@ class Serial(Timestampable, models.Model):
             self.level = 2
         super(Serial, self).save(kwargs)
 
+    def get_subserial(self, include=True):
+        """
+        获取subserial, 是否包括自己.
+        """
+        # 超级serial
+        if self.is_supper:
+            if include:
+                return Serial.objects.all()
+            return Serial.objects.all().exclude(serial=self.serial)
+        # 其他serial
+        if self.is_supper:
+            return Member.objects.all()
+        if self.level == 0:
+            condition = self.serial[:5]
+        elif self.level == 1:
+            condition = self.serial[:6]
+        else:
+            condition = self.serial
+        sql = "serial LIKE '{}%%'".format(condition)
+        if include:
+            return Serial.objects.extra(where=[sql])
+        return Serial.objects.extra(
+            where=[sql]).exclude(serial=self.serial)
+
+    def is_subserial_of(self, serial_obj):
+        if serial_obj.is_supper:
+            return True
+        return (self in serial_obj.get_subserial())
+
+    def managed_members(self):
+        if self.is_supper:
+            return Member.objects.all()
+        pool = [s.serial for s in self.get_subserial()]
+        return Member.objects.filter(serial__in=pool)
+
+
+class MemberManager(models.Manager):
+
+    def is_exist(self, moblie):
+        return True if self.get_queryset().filter(moblie=moblie) else False
+
 
 class Member(Timestampable, models.Model):
     """平台用户表"""
@@ -56,6 +97,7 @@ class Member(Timestampable, models.Model):
     uid = models.CharField(max_length=32, unique=True,
                            verbose_name='优宜巧购用户ID')
     reg_time = models.DateTimeField(verbose_name='优宜巧购注册时间')
+    objects = MemberManager()
 
     class Meta:
         verbose_name = _('优宜巧购用户')
