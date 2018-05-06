@@ -20,3 +20,8 @@ body {
  .theme-showcase {
   margin-top: 100px;
 }
+
+.menu {
+  flex-direction: row-reverse;
+}
+
