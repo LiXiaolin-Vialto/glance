@@ -11,7 +11,7 @@ class SubLevelSerialSerializer(serializers.Serializer):
 
     def validate(self, data):
         if not Serial.objects.is_exist(data['serial']):
-            raise serializers.ValidationError("Serial does not exist.")
+            raise serializers.ValidationError("会员号不存在.")
         return data
 
 
@@ -25,7 +25,7 @@ class MemberOrdersSerializer(serializers.Serializer):
 
     def validate(self, data):
         if not Serial.objects.is_exist(data['serial']):
-            raise serializers.ValidationError("Serial does not exist.")
+            raise serializers.ValidationError("会员号不存在.")
         return data
     # todo validate date
     # def validate(self, data):
@@ -44,29 +44,31 @@ class AssginMemberSerializer(serializers.Serializer):
         fields = ('from_serial', 'to_serial', 'moblie')
 
     def validate(self, data):
-        from_serial_obj = Serial.objects.get(data['from_serial'])
+        from_serial_obj = Serial.objects.get(serial=data['from_serial'])
         # from_serial has to be level0 serial
         if from_serial_obj.level != 0:
             raise serializers.ValidationError(
-                "Serial does not have the privilege to assign members.")
+                "没有权限分配该优宜巧购用户.")
 
         if not Serial.objects.is_exist(data['to_serial']):
-            raise serializers.ValidationError("Serial does not exist.")
-        to_serial_obj = Serial.objects.get(data['to_serial'])
+            raise serializers.ValidationError("会员号不存在.")
+        to_serial_obj = Serial.objects.get(serial=data['to_serial'])
         # check to_serial is sub serial of from_serial
         if not to_serial_obj.is_subserial_of(from_serial_obj):
             raise serializers.ValidationError(
-                "%s is not subserial of %s." % (to_serial_obj,
-                                                from_serial_obj))
+                "%s 不是 %s 的次级会员." % (to_serial_obj, from_serial_obj))
 
         # check member mobile exist
         if not Member.objects.is_exist(data['moblie']):
-            raise serializers.ValidationError("Member does not exist.")
+            raise serializers.ValidationError("优宜巧购用户不存在.")
         # member must be managable memeber for from_serial
         member = Member.objects.get(moblie=data['moblie'])
+        if member.serial == data['to_serial']:
+            raise serializers.ValidationError(
+                "优宜巧购用户已经属于该会员.")
         member_pool = from_serial_obj.managed_members()
         if member not in member_pool:
-            raise serializers.ValidationError("Can not assign this member.")
+            raise serializers.ValidationError("不能分配此优宜巧购用户.")
         return data
 
 
@@ -80,6 +82,6 @@ class AllMemberOrdersSerializer(serializers.Serializer):
 
     def validate(self, data):
         if not Serial.objects.is_exist(data['serial']):
-            raise serializers.ValidationError("Serial does not exist.")
+            raise serializers.ValidationError("会员号不存在.")
         return data
 # ########################drop later#########################
