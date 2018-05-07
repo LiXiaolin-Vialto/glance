@@ -17,6 +17,7 @@ from rest_framework.decorators import api_view
 from .serializers import (SubLevelSerialSerializer,
                           MemberOrdersSerializer,
                           AllMemberOrdersSerializer,
+                          AssginMemberSerializer,
                           )
 from .models import Serial, Member, Order, MonthlyData
 from commons.exceptions import APIError
@@ -137,28 +138,8 @@ def sub_level_serials(request):
     if serializer.is_valid():
         logger.info('[sub_level_serials] Received data is valid.')
         serial = Serial.objects.get(serial=serializer.validated_data['serial'])
-        # 超级serial
-        if serial.is_supper:
-            serials = Serial.objects.all().exclude(serial=serial.serial)
-            results = _format_serials(serials)
-            return Response(results)
-        else:
-            # 其他serial
-            # serials = Serial.objects.filter(
-            #     serial__startswith=serializer.validated_data['serial']
-            # ).exclude(serial=serial.serial)
-
-            # not sure why, filter does not work!
-            if serial.level == 0:
-                condition = serial.serial[:5]
-            elif serial.level == 1:
-                condition = serial.serial[:6]
-            else:
-                condition = serial.serial
-            sql = "serial LIKE '{}%%'".format(condition)
-            serials = Serial.objects.extra(where=[sql]).exclude(serial=serial.serial)
-            results = _format_serials(serials)
-            return Response(results)
+        results = _format_serials(serial.get_subserial(include=False))
+        return Response(results)
     raise APIError(APIError.INVALID_REQUEST_DATA, detail=serializer.errors)
 
 
@@ -195,6 +176,7 @@ def get_member_orders(request):
 
 
 @api_view(['GET'])
+@login_required
 def get_monthly_data(request):
     """
     根据当前serial,获取直系用户月度订单,此接口不能通过日期来查看
@@ -222,7 +204,7 @@ def get_monthly_data(request):
             else:
                 return [given_date + relativedelta(
                     months=-i) for i in range(1, 7)]
-
+        # FIX ME: REMOVE date(2017, 3, 1)
         for month in _gen_past_six_months(date(2017, 3, 1)):
             data = monthly_data.filter(month=month.strftime("%Y-%m"))
             details.append(
@@ -233,6 +215,25 @@ def get_monthly_data(request):
                  })
         return Response({'results': details})
     raise APIError(APIError.INVALID_REQUEST_DATA, detail=serializer.errors)
+
+
+@api_view(['POST'])
+@login_required
+def assgin_member(request):
+    """
+    顶级序列会员可把自己的巧购用户分配个sub序列会员.
+    """
+    logger.info('[assgin_member] Received data : %s' %
+                request.data)
+    serializer = AssginMemberSerializer(data=request.data)
+    if serializer.is_valid():
+        logger.info('[assgin_member] Received data is valid.')
+        member = Member.objects.get(moblie=serializer.validated_data['moblie'])
+        member.serial = serializer.validated_data['to_serial']
+        member.save()
+        return Response({'results': "success"})
+    #  FIX ME: 需要调整返回接口结构内容
+    return Response({'results': str(serializer.errors)})
 
 
 # ########################drop later#########################
@@ -285,28 +286,8 @@ def sub_serials(request):
     if serializer.is_valid():
         logger.info('[sub_serials] Received data is valid.')
         serial = Serial.objects.get(serial=serializer.validated_data['serial'])
-        # 超级serial
-        if serial.is_supper:
-            serials = Serial.objects.all().exclude(serial=serial.serial)
-            print serials
-            results = _format_serials_without_level(serials)
-            return Response(results)
-        else:
-            # 其他serial
-            # serials = Serial.objects.filter(
-            #     serial__startswith=str(serial.serial)
-            # ).exclude(serial=serial.serial)
-
-            # not sure why, filter does not work!
-            if serial.level == 0:
-                condition = serial.serial[:5]
-            elif serial.level == 1:
-                condition = serial.serial[:6]
-            else:
-                condition = serial.serial
-            sql = "serial LIKE '{}%%'".format(condition)
-            serials = Serial.objects.extra(where=[sql]).exclude(serial=serial.serial)
-            results = _format_serials_without_level(serials)
-            return Response(results)
+        serials = serial.get_subserial(include=False)
+        results = _format_serials_without_level(serials)
+        return Response(results)
     raise APIError(APIError.INVALID_REQUEST_DATA, detail=serializer.errors)
 # ########################drop later#########################
