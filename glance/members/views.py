@@ -228,7 +228,7 @@ def assgin_member(request):
     serializer = AssginMemberSerializer(data=request.data)
     if serializer.is_valid():
         logger.info('[assgin_member] Received data is valid.')
-        member = Member.objects.get(moblie=serializer.validated_data['moblie'])
+        member = Member.objects.get(mobile=serializer.validated_data['mobile'])
         member.serial = serializer.validated_data['to_serial']
         member.save()
         return Response({'results': "success"})

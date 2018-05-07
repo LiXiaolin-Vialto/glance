@@ -38,10 +38,10 @@ class AssginMemberSerializer(serializers.Serializer):
     # 分配member的serial
     from_serial = serializers.CharField(required=True)
     to_serial = serializers.CharField(required=True)
-    moblie = serializers.CharField(required=True)
+    mobile = serializers.CharField(required=True)
 
     class Meta:
-        fields = ('from_serial', 'to_serial', 'moblie')
+        fields = ('from_serial', 'to_serial', 'mobile')
 
     def validate(self, data):
         from_serial_obj = Serial.objects.get(serial=data['from_serial'])
@@ -59,10 +59,10 @@ class AssginMemberSerializer(serializers.Serializer):
                 "%s 不是 %s 的次级会员." % (to_serial_obj, from_serial_obj))
 
         # check member mobile exist
-        if not Member.objects.is_exist(data['moblie']):
+        if not Member.objects.is_exist(data['mobile']):
             raise serializers.ValidationError("优宜巧购用户不存在.")
         # member must be managable memeber for from_serial
-        member = Member.objects.get(moblie=data['moblie'])
+        member = Member.objects.get(mobile=data['mobile'])
         if member.serial == data['to_serial']:
             raise serializers.ValidationError(
                 "优宜巧购用户已经属于该会员.")

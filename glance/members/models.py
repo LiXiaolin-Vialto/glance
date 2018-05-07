@@ -20,7 +20,7 @@ class Serial(Timestampable, models.Model):
     is_supper = models.BooleanField(default=False, verbose_name='超级会员')
     level = models.PositiveSmallIntegerField(verbose_name='会员层级')
     name = models.CharField(max_length=32, unique=True, verbose_name='会员姓名')
-    moblie = models.CharField(max_length=12, unique=True, verbose_name='手机号')
+    mobile = models.CharField(max_length=12, unique=True, verbose_name='手机号')
     #  Links Serial to a User model instance.
     user = models.OneToOneField(User)
     objects = SerialManager()
@@ -80,15 +80,15 @@ class Serial(Timestampable, models.Model):
 
 class MemberManager(models.Manager):
 
-    def is_exist(self, moblie):
-        return True if self.get_queryset().filter(moblie=moblie) else False
+    def is_exist(self, mobile):
+        return True if self.get_queryset().filter(mobile=mobile) else False
 
 
 class Member(Timestampable, models.Model):
     """平台用户表"""
     name = models.CharField(max_length=32, unique=True, verbose_name='用户名')
     email = models.EmailField(unique=True, verbose_name='注册邮箱')
-    moblie = models.CharField(max_length=12, unique=True, verbose_name='手机号')
+    mobile = models.CharField(max_length=12, unique=True, verbose_name='手机号')
     # 默认使用 01001000这个序列号
     serial = models.CharField(max_length=32, default="01001000", null=True,
                               db_index=True, verbose_name='序列号')

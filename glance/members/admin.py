@@ -8,7 +8,7 @@ from .models import Serial, Member
 
 @admin.register(Serial)
 class SerialAdmin(admin.ModelAdmin):
-    list_display = ('serial', 'level', 'name', 'moblie')
+    list_display = ('serial', 'level', 'name', 'mobile')
     readonly_fields = ('level', 'number_of_members')
 
     def number_of_members(self, obj):
@@ -21,10 +21,10 @@ class SerialAdmin(admin.ModelAdmin):
 
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ('name', 'moblie', 'email', 'serial',
+    list_display = ('name', 'mobile', 'email', 'serial',
                     'serial_changed', 'serial_history',
                     'uid', 'reg_time')
-    readonly_fields = ('name', 'moblie', 'email',
+    readonly_fields = ('name', 'mobile', 'email',
                        'serial_changed', 'serial_history',
                        'uid', 'reg_time')
 

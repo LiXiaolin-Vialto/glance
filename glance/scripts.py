@@ -53,7 +53,7 @@ def create_members():
         for row in rows:
             member = Member.objects.create(name=row[1],
                                            email=row[2],
-                                           moblie=row[3],
+                                           mobile=row[3],
                                            uid=str(row[0]),
                                            reg_time=timestamp_converter(row[4]))
             print member

@@ -14,4 +14,4 @@ class UserForm(forms.ModelForm):
 class SerialForm(forms.ModelForm):
     class Meta:
         model = Serial
-        fields = ('serial', 'name', 'moblie')
+        fields = ('serial', 'name', 'mobile')
