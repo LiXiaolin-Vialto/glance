@@ -43,7 +43,7 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand navbar-light bg-transparent fixed-top">
+    <nav class="navbar navbar-expand navbar-light bg-light fixed-top">
       <a class="navbar-brand" href="#">Glance</a>
       <button type="button" class="navbar-toggler"
               data-toggle="collapse"
@@ -53,10 +53,10 @@
               aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
       </button>
-    <div id="navbar" class="collapse navbar-collapse">
+    <div id="navbar" class="collapse navbar-collapse menu">
       <ul class="navbar-nav">
         {% if user.is_authenticated %}
-        <li class="nav-item active"><a href="/logout" class="nav-link">退出登录</a></li>
+        <li class="nav-item"><a href="/logout" class="nav-link">退出登录</a></li>
         {% else %}
         <li class="nav-item"><a href="/login" class="nav-link">会员登录</a></li>
         <li class="nav-item"><a href="/register" class="nav-link">会员注册</a></li>

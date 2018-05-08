@@ -37,18 +37,17 @@ var glanceData = new Vue({
     },
     methods: {
         setSelectedSerial: function(selectedSerial){
-        var self = this;
-        self.selectedSerial = selectedSerial;
-        console.log(selectedSerial);
-        get('/api/get-all-orders/',{ serial: self.selectedSerial}
-            ).then(function(res) {
-        self.orderData.orders = res.results;});
+            var self = this;
+            self.selectedSerial = selectedSerial.serial;
+            get('/api/get-all-orders/',{ serial: self.selectedSerial}
+                ).then(function(res) {
+            self.orderData.orders = res.results;});
 
-        get('/api/get-monthly-data/', { serial: self.selectedSerial
-        }).then(function(res) {
-            self.monthlyData.months = filterMonthlyData(res.results);
-            console.log(self.monthlyData.months);
-        });
+            get('/api/get-monthly-data/', { serial: self.selectedSerial
+            }).then(function(res) {
+                self.monthlyData.months = filterMonthlyData(res.results);
+                console.log(self.monthlyData.months);
+            });
         }
     },
     created: function() {
@@ -59,7 +58,8 @@ var glanceData = new Vue({
             serial: userSerial
         }).then(function(res) {
             self.serialData.serials = res.results;
-            console.log(self.serialData);
+
+            _.map(self.serialData.serials, serial => serial.name = serial.name+"的订单编号");
         });
         // 获取会员的直接订单
         get('/api/get-all-orders/', {

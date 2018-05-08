@@ -12,71 +12,74 @@
     <span class="nowrap" id="serial"><b>{{user.serial.serial}}</b></span>
 </p>
 
-<h4>次级会员列表</h4>
-    <ul class="nav nav-tabs" >
-       <li class="active"><a data-toggle="tab" onclick="window.location.href=this">自有用户订单</a></li>
-       <li v-for="obj in serialData.serials"><a data-toggle="tab" href="#${obj.serial}" @click="setSelectedSerial(obj.serial)">${obj.name}的用户订单</a></li>
-    </ul>
-
-<h4>月度汇总</h4>
-<div class="row">
-    <div class="col-md-12">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>月份</th>
-                    <th>买家数</th>
-                    <th>订单数</th>
-                    <th>订单总金额</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="month in monthlyData.months">
-                    <td class="left">${monthlyData.months.indexOf(month) + 1}</td>
-                    <td>${month.month}</td>
-                    <td>${month.num_of_buyers}</td>
-                    <td>${month.amount}</td>
-                    <td>${month.total}</td>
-                    <div v-if="(monthlyData.months.length == 0)">
-                    <strong>无月度汇总。</strong>
-                    </div>
-                </tr>
-            </tbody>
-        </table>
+<div class="sub-user-list">
+    <h4>次级会员列表</h4>
+    <div class="list-group" role="tablist">
+       <a onclick="window.location.href=this" data-toggle="list" class="list-group-item list-group-item-text active" role="tab">自有用户订单</a>
+       <a  v-for="obj in serialData.serials" href="#${obj.serial}" @click="setSelectedSerial(obj)" data-toggle="list"  class="list-group-item  list-group-item-text " role="tab">${obj.name}的用户订单</a>
     </div>
-</div> 
+</div>
 
-<h4>推荐用户的优宜巧购订单列表</h4>
-<div class="row">
-    <div class="col-md-12">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>优宜巧购订单号</th>
-                    <th>买家名</th>
-                    <th>订单总金额</th>
-                    <th>下单时间</th>
-                    <th>完成时间</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="order in orderData.orders">
-                    <td class="left">${orderData.orders.indexOf(order) + 1}</td>
-                    <td>${order.order_number}</td>
-                    <td>${order.buyer_name}</td>
-                    <td>${order.total}</td>
-                    <td>${order.order_time}</td>
-                    <td>${order.finished_time}</td>
-                    <div v-if="(orderData.orders.length == 0)">
-                    <strong>暂无优宜巧购订单。</strong>
-                    </div>
-                </tr>
-            </tbody>
-        </table>
+<div class="main-content">
+    <h4>月度汇总</h4>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>月份</th>
+                        <th>买家数</th>
+                        <th>订单数</th>
+                        <th>订单总金额</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="month in monthlyData.months">
+                        <td class="left">${monthlyData.months.indexOf(month) + 1}</td>
+                        <td>${month.month}</td>
+                        <td>${month.num_of_buyers}</td>
+                        <td>${month.amount}</td>
+                        <td>${month.total}</td>
+                        <div v-if="(monthlyData.months.length == 0)">
+                        <strong>无月度汇总。</strong>
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div> 
+    <h4>推荐用户的优宜巧购订单列表</h4>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>优宜巧购订单号</th>
+                        <th>买家名</th>
+                        <th>订单总金额</th>
+                        <th>下单时间</th>
+                        <th>完成时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="order in orderData.orders">
+                        <td class="left">${orderData.orders.indexOf(order) + 1}</td>
+                        <td>${order.order_number}</td>
+                        <td>${order.buyer_name}</td>
+                        <td>${order.total}</td>
+                        <td>${order.order_time}</td>
+                        <td>${order.finished_time}</td>
+                        <div v-if="(orderData.orders.length == 0)">
+                        <strong>暂无优宜巧购订单。</strong>
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 
 {% else %}
@@ -89,4 +92,6 @@
 {% block script %}
     <script src="{% static 'js/lodash.min.js' %}"></script>
     <script src="{% static 'js/index.js' %}"></script>
+
+    <link href="{% static 'css/index.css' %}" rel="stylesheet">
 {% endblock %}
