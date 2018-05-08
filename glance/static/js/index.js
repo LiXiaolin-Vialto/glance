@@ -59,7 +59,7 @@ var glanceData = new Vue({
         }).then(function(res) {
             self.serialData.serials = res.results;
 
-            _.map(self.serialData.serials, serial => serial.name = serial.name+"的订单编号");
+            console.log(self.serialData.serials);
         });
         // 获取会员的直接订单
         get('/api/get-all-orders/', {
