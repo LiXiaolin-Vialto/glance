@@ -64,11 +64,11 @@ env.project_root = '/data/projects/%s' % (env.project)
 
 env.settings = {
     'test': {
-        'hosts': ['root@121.43.118.191'],
+        'hosts': ['root@47.104.252.29'],
         'project_base': '/data/projects',
         'project_root': '/data/projects/%s' % env.project,
         'django_settings': 'test',
-        'app_url': 'http://121.43.118.191:8108',
+        'app_url': 'http://47.104.252.29:8108',
     },
     'staging': {
     },
