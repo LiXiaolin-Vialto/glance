@@ -1,0 +1,17 @@
+.sub-user-list {
+    width: 200px;
+    float: left;
+}
+.sub-user-list a {
+    color: #000;
+}
+
+.list-group-item.active , .list-group-item.active:hover, .list-group-item.active:visited{
+    background: #f2f2f2 !important;
+    text-shadow: none !important;
+    border: 1px solid #f2f2f2 !important;
+    color: #000;
+}
+.main-container {
+    float: left;
+}
