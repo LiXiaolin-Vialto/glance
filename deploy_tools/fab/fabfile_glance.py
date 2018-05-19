@@ -42,13 +42,15 @@ from contextlib import contextmanager
 
 DEBUG = False
 
-PROJECT_ASCII_NAME = '''\
-       _
-  __ _| | __ _ _ __   ___ ___
- / _` | |/ _` | '_ \ / __/ _ \
-| (_| | | (_| | | | | (_|  __/
- \__, |_|\__,_|_| |_|\___\___|
- |___/
+PROJECT_ASCII_NAME = '''
+ _______  _        _______  _        _______  _______ 
+(  ____ \( \      (  ___  )( (    /|(  ____ \(  ____ \
+| (    \/| (      | (   ) ||  \  ( || (    \/| (    \/
+| |      | |      | (___) ||   \ | || |      | (__    
+| | ____ | |      |  ___  || (\ \) || |      |  __)   
+| | \_  )| |      | (   ) || | \   || |      | (      
+| (___) || (____/\| )   ( || )  \  || (____/\| (____/\
+(_______)(_______/|/     \||/    )_)(_______/(_______/
 '''
 env.port = 22
 env.git_branch = 'master'
@@ -64,11 +66,11 @@ env.project_root = '/data/projects/%s' % (env.project)
 
 env.settings = {
     'test': {
-        'hosts': ['root@121.43.118.191'],
+        'hosts': ['root@47.104.252.29'],
         'project_base': '/data/projects',
         'project_root': '/data/projects/%s' % env.project,
         'django_settings': 'test',
-        'app_url': 'http://121.43.118.191:8108',
+        'app_url': 'http://47.104.252.29:8108',
     },
     'staging': {
     },
