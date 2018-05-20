@@ -52,6 +52,31 @@ var glanceData = new Vue({
     },
     created: function() {
         var self = this;
+        const user_data = [{
+            name: "aaa",
+            belongsTo: "xxx"
+        },{
+            name: "bbb",
+            belongsTo: "xxx"
+        },{
+            name: "ccc",
+            belongsTo: "yyy"
+        },{
+            name: "ddd",
+            belongsTo: "zzz"
+        }];
+
+        const sub_manager = [{
+            name: "xxx",
+            serial: "00001"
+        },{
+            name: "yyy",
+            serial: "00002"
+
+        },{
+            name: "zzz",
+            serial:"00003"
+        },];
         console.log(userSerial);
         // 获取会员的次级会员
         get('/api/sub-serials/', {
@@ -75,5 +100,9 @@ var glanceData = new Vue({
             self.monthlyData.months = filterMonthlyData(res.results);
             console.log(self.monthlyData.months);
         });
+
+        self.users = user_data;
+        self.sub_manager = sub_manager;
+
     }
 });
