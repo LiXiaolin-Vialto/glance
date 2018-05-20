@@ -7,7 +7,7 @@
 
 {% block body_block %}
     <body class="text-center">
-        <h1 lass="h3 mb-3 font-weight-normal">请登录Glance</h1>
+        <h1 class="h3 mb-3 font-weight-normal">请登录Glance</h1>
         {{ login_info }}
         <form id="login_form" class="form-signin" method="post" action="/login/">
             {% csrf_token %}
