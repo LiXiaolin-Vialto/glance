@@ -2,11 +2,13 @@
 import logging
 import time
 
-from datetime import datetime
+from dateutil.relativedelta import relativedelta
+from datetime import datetime, timedelta
 from django.db import connections
 from django.db import transaction
+from django.db.models import Sum
 
-from members.models import Member, Order
+from members.models import Member, Order, MonthlyData
 
 
 logger = logging.getLogger(__name__)
@@ -73,5 +75,35 @@ def create_orders():
             print order
 
 
+@transaction.atomic
+def create_monthly_data():
+    result = []
+    # 下次运行, 需要修改,
+    today = datetime.date.today()
+    current = datetime.date(2015, 10, 1)
+
+    while current <= today:
+        result.append(current)
+        current += relativedelta(months=1)
+
+    for date in result:
+        YESTERDAY = date - timedelta(1)
+        print "get %s montlt data." % YESTERDAY
+        last_month_orders = Order.objects.filter(
+            finished_time__year=YESTERDAY.year,
+            finished_time__month=YESTERDAY.month)
+
+        for d in last_month_orders.values('buyer_id').distinct():
+            orders = last_month_orders.filter(
+                buyer_id=d['buyer_id'])
+            MonthlyData.objects.create(month=YESTERDAY.strftime("%Y-%m"),
+                                       buyer_id=d['buyer_id'],
+                                       buyer_name=orders[0].buyer_name,
+                                       total=orders.aggregate(
+                                           Sum('total'))["total__sum"],
+                                       amount=len(orders))
+
+
 create_members()
 create_orders()
+create_monthly_data()
