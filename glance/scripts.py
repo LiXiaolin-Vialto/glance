@@ -3,7 +3,7 @@ import logging
 import time
 
 from dateutil.relativedelta import relativedelta
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from django.db import connections
 from django.db import transaction
 from django.db.models import Sum
@@ -79,15 +79,15 @@ def create_orders():
 def create_monthly_data():
     result = []
     # 下次运行, 需要修改,
-    today = datetime.date.today()
-    current = datetime.date(2015, 10, 1)
+    today = date.today()
+    current = date(2015, 10, 1)
 
     while current <= today:
         result.append(current)
         current += relativedelta(months=1)
 
-    for date in result:
-        YESTERDAY = date - timedelta(1)
+    for d in result:
+        YESTERDAY = d - timedelta(1)
         print "get %s montlt data." % YESTERDAY
         last_month_orders = Order.objects.filter(
             finished_time__year=YESTERDAY.year,
