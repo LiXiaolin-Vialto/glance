@@ -88,7 +88,7 @@ def create_monthly_data():
 
     for d in result:
         YESTERDAY = d - timedelta(1)
-        print "get %s montlt data." % YESTERDAY
+        print "get %s montly data." % YESTERDAY
         last_month_orders = Order.objects.filter(
             finished_time__year=YESTERDAY.year,
             finished_time__month=YESTERDAY.month)
