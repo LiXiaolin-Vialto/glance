@@ -204,8 +204,8 @@ def get_monthly_data(request):
             else:
                 return [given_date + relativedelta(
                     months=-i) for i in range(1, 7)]
-        # FIX ME: REMOVE date(2017, 3, 1)
-        for month in _gen_past_six_months(date(2017, 3, 1)):
+
+        for month in _gen_past_six_months():
             data = monthly_data.filter(month=month.strftime("%Y-%m"))
             details.append(
                 {"month": month.strftime("%Y-%m"),
