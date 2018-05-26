@@ -26,33 +26,25 @@ from .forms import UserForm, SerialForm
 logger = logging.getLogger(__name__)
 
 
-# def _paginate_response(data, request):
-#     paginator = PageNumberPagination()
-#     result_page = paginator.paginate_queryset(data, request)
-#     return paginator.get_paginated_response(result_page)
-
-
-# class CustomPagination(PageNumberPagination):
-#     def get_paginated_response(self, data):
-#         return Response({
-#             'links': {
-#                 'next': self.get_next_link(),
-#                 'previous': self.get_previous_link()
-#             },
-#             'count': self.page.paginator.count,
-#             'results': data
-#         })
-
-
-# class SerialListView(APIView):
-#     """返回所有序列会员"""
-#     def get(self, request, format=None):
-#         # Returns a JSON response with a listing of serial objects
-#         serials = Serial.objects.all()
-#         paginator = PageNumberPagination()
-#         result_page = paginator.paginate_queryset(serials, request)
-#         serializer = SerialSerializer(result_page, many=True)
-#         return paginator.get_paginated_response(serializer.data)
+@api_view(['GET'])
+@login_required
+def list_member(request):
+    """根据当前serial获取该seial及其下级serial的巧购member"""
+    logger.info('[list_members] Received data : %s' %
+                request.query_params)
+    serializer = SubLevelSerialSerializer(data=request.query_params)
+    if serializer.is_valid():
+        logger.info('[list_members] Received data is valid.')
+        details = []
+        serial = Serial.objects.get(serial=serializer.validated_data['serial'])
+        serials = serial.get_subserial(include=True)
+        members = Member.objects.filter(serial__in=[s.serial for s in serials])
+        for member in members:
+            details.append({"name": member.name,
+                            "mobile": member.mobile,
+                            "belongTo": member.serial})
+        return Response({'results': details})
+    raise APIError(APIError.INVALID_REQUEST_DATA, detail=serializer.errors)
 
 
 def register(request):
