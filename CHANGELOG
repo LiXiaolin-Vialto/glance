@@ -1,0 +1,20 @@
+Changelog
+=========
+
+Descriptions
+-----------
+ - New: 添加新功能
+ - Improvement: 增强已有功能
+ - Fix: 修正Bug
+ - Deprecated: 弃用已有功能
+ - Removed: 删除已有功能
+
+
+ 
+1.0.0
+-----
+ - New: A bash broad for Serial member to check all user orders
+        and monthly report
+
+ - New: fetch data from external youyiqiaogou database to 
+        get new member and order into glance

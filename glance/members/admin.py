@@ -9,7 +9,8 @@ from .models import Serial, Member
 @admin.register(Serial)
 class SerialAdmin(admin.ModelAdmin):
     list_display = ('serial', 'level', 'name', 'mobile')
-    readonly_fields = ('level', 'number_of_members')
+    readonly_fields = ('is_supper', 'mobile', 'name', 'user',
+                       'level', 'number_of_members')
 
     def number_of_members(self, obj):
         return len(Member.objects.filter(serial=obj.serial))

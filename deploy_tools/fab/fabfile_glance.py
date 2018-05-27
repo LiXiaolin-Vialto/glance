@@ -43,14 +43,7 @@ from contextlib import contextmanager
 DEBUG = False
 
 PROJECT_ASCII_NAME = '''
- _______  _        _______  _        _______  _______ 
-(  ____ \( \      (  ___  )( (    /|(  ____ \(  ____ \
-| (    \/| (      | (   ) ||  \  ( || (    \/| (    \/
-| |      | |      | (___) ||   \ | || |      | (__    
-| | ____ | |      |  ___  || (\ \) || |      |  __)   
-| | \_  )| |      | (   ) || | \   || |      | (      
-| (___) || (____/\| )   ( || )  \  || (____/\| (____/\
-(_______)(_______/|/     \||/    )_)(_______/(_______/
+GLANCE
 '''
 env.port = 22
 env.git_branch = 'master'
@@ -323,7 +316,7 @@ def health_check():
     with settings(hide('stdout', 'stderr', 'running')):
         _check_gunicorn_worker()
         # _check_celery_worker()
-        _check_app_version()
+        # _check_app_version()
 
 
 def list_crontab():
